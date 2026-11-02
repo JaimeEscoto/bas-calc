@@ -73,7 +73,6 @@
     .op { background: #ff9f0a; }
     .fn { background: #5a5d6e; }
     .equals { background: #30c060; }
-    .zero { grid-column: span 2; }
   </style>
 </head>
 <body>
@@ -104,7 +103,8 @@
       <button data-num="3">3</button>
       <button class="op" data-op="+">+</button>
 
-      <button class="zero" data-num="0">0</button>
+      <button class="fn" data-action="sqrt">√</button>
+      <button data-num="0">0</button>
       <button data-num=".">.</button>
       <button class="equals" data-action="equals">=</button>
     </div>
@@ -185,6 +185,13 @@
       current = String(parseFloat(current) / 100);
     }
 
+    function sqrt() {
+      if (current === 'Error') return;
+      const n = parseFloat(current);
+      current = n < 0 ? 'Error' : String(parseFloat(Math.sqrt(n).toPrecision(12)));
+      resetNext = true;
+    }
+
     document.querySelector('.keys').addEventListener('click', (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
@@ -196,6 +203,7 @@
       else if (action === 'clear') clearAll();
       else if (action === 'delete') deleteLast();
       else if (action === 'percent') percent();
+      else if (action === 'sqrt') sqrt();
 
       render();
     });
@@ -209,6 +217,7 @@
       else if (k === 'Backspace') deleteLast();
       else if (k === 'Escape') clearAll();
       else if (k === '%') percent();
+      else if (k === 'r') sqrt();
       else return;
       render();
     });
